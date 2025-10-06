@@ -1,8 +1,10 @@
 import express, { Request, Response, NextFunction } from 'express';
-import routes from "./api/routes";
-import Logger from './Infra/Logger';
-import { basicAuthMiddleware } from './basicAuth';
-import CustomError from './api/exceptions/CustomError';
+import routes from "./4webApi/routes";
+import Logger from './3infra/repositorios/Logger';
+import { basicAuthMiddleware } from './3infra/middlewares/basicAuth';
+import CustomError from './2domain/exceptions/CustomError';
+import MongooseConfig from './3infra/dbConfig/mongooseConfig';
+import dotenv from 'dotenv';
 
 function errorHandler(error: Error, req: Request, res: Response, next: NextFunction) {
     if (error instanceof CustomError) {
@@ -17,6 +19,10 @@ function errorHandler(error: Error, req: Request, res: Response, next: NextFunct
         status: status
     });
 }
+
+dotenv.config();
+
+MongooseConfig.connect();
 
 const app = express();
 const port = 3000;
